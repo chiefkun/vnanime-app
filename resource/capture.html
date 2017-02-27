@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>VnAnime App</title>
+    <style media="screen">
+    .bg-gradient1 span,
+    .bg-gradient1:before {
+    background: #fa7e29;
+    background: -webkit-linear-gradient(180deg, #fa7e29 0%, #F6682F 80%, #F6682F 100%);
+    background: -webkit-linear-gradient(top, #fa7e29 0%, #F6682F 80%, #F6682F 100%);
+    background: linear-gradient(180deg, #fa7e29 0%, #F6682F 80%, #F6682F 100%);
+    }
+    .pop-onhover.bg-gradient3 span,
+    .pop-onhover.bg-gradient3:before {
+      background: #B9AEF0;
+      background: -webkit-linear-gradient(180deg, #B9AEF0 0%, #ADA1EB 80%, #ADA1EB 100%);
+      background: -webkit-linear-gradient(top, #B9AEF0 0%, #ADA1EB 80%, #ADA1EB 100%);
+      background: linear-gradient(180deg, #B9AEF0 0%, #ADA1EB 80%, #ADA1EB 100%);
+    }
+    .fancy-button {
+      display: inline-block;
+      margin: 20px;
+      font-family: 'Heebo', Helvetica, Arial, sans-serif;
+      font-weight: 500;
+      font-size: 16px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      line-height: 24px;
+      color: #ffffff;
+      position: relative;
+    }
+    .fancy-button.bg-gradient1 {
+      text-shadow: 0px 0px 1px #BF4C28;
+    }
+    .fancy-button.bg-gradient3 {
+      text-shadow: 0 0 1px #546082;
+    }
+    .fancy-button:before {
+      content: '';
+      display: inline-block;
+      height: 40px;
+      position: absolute;
+      bottom: -1px;
+      left: 10px;
+      right: 10px;
+      z-index: -1;
+      border-radius: 2em;
+      -webkit-filter: blur(14px) brightness(0.9);
+              filter: blur(14px) brightness(0.9);
+      -webkit-transform-style: preserve-3d;
+              transform-style: preserve-3d;
+      -webkit-transition: all 0.3s ease-out;
+      transition: all 0.3s ease-out;
+    }
+    .fancy-button i {
+      margin-top: -2px;
+      font-size: 1.265em;
+      vertical-align: middle;
+    }
+    .fancy-button span {
+      display: inline-block;
+      padding: 16px 20px;
+      border-radius: 50em;
+      position: relative;
+      z-index: 2;
+      will-change: transform, filter;
+      -webkit-transform-style: preserve-3d;
+              transform-style: preserve-3d;
+      -webkit-transition: all 0.3s ease-out;
+      transition: all 0.3s ease-out;
+    }
+    .fancy-button:focus {
+      color: #ffffff;
+    }
+    .fancy-button:hover {
+      color: #ffffff;
+    }
+    .fancy-button:hover span {
+      -webkit-filter: brightness(0.9) contrast(1.2);
+              filter: brightness(0.9) contrast(1.2);
+      -webkit-transform: scale(0.96);
+              transform: scale(0.96);
+    }
+    .fancy-button:hover:before {
+      bottom: 3px;
+      -webkit-filter: blur(6px) brightness(0.8);
+              filter: blur(6px) brightness(0.8);
+    }
+    .fancy-button:active span {
+      -webkit-filter: brightness(0.75) contrast(1.7);
+              filter: brightness(0.75) contrast(1.7);
+    }
+    .fancy-button.pop-onhover span {
+      border-radius: 4px;
+    }
+    .fancy-button.pop-onhover:before {
+      opacity: 0;
+      bottom: 10px;
+    }
+    .fancy-button.pop-onhover:hover:before {
+      bottom: -7px;
+      opacity: 1;
+      -webkit-filter: blur(16px);
+              filter: blur(16px);
+    }
+    .fancy-button.pop-onhover:hover span {
+      -webkit-transform: scale(1);
+              transform: scale(1);
+    }
+    .fancy-button.pop-onhover:hover:active span {
+      -webkit-filter: brightness(1) contrast(1);
+              filter: brightness(1) contrast(1);
+      -webkit-transform: scale(1);
+              transform: scale(1);
+      -webkit-transition: all 0.2s ease-out;
+      transition: all 0.2s ease-out;
+    }
+    .fancy-button.pop-onhover:hover:active:before {
+      bottom: 0;
+      -webkit-filter: blur(5px) brightness(0.85);
+              filter: blur(5px) brightness(0.85);
+      -webkit-transition: all 0.2s ease-out;
+      transition: all 0.2s ease-out;
+    }
+
+    .pop-onhover.bg-gradient3 span:hover {
+      background: #B9AEF0;
+      background: -webkit-linear-gradient(120deg, #B9AEF0 0%, #ADA1EB 80%, #ADA1EB 100%);
+      background: -webkit-linear-gradient(330deg, #B9AEF0 0%, #ADA1EB 80%, #ADA1EB 100%);
+      background: linear-gradient(120deg, #B9AEF0 0%, #ADA1EB 80%, #ADA1EB 100%);
+    }
+
+    </style>
+  </head>
+  <body style="text-align: center">
+    <a href="temp/capture-temp.png" class="fancy-button pop-onhover bg-gradient1" download="vnanime.png"><span>Download</span></a>
+	  <a href="" onclick="reCapture()" class="fancy-button pop-onhover bg-gradient3"><span><i class="fa fa-pencil"></i>Re-Capture</span></a>
+    <a href="" onclick="window.close()" class="fancy-button pop-onhover bg-gradient1"><span>Done</span></a>
+    <br>
+    <img src="temp/capture-temp.png" alt="" draggable="false">
+    <script type="text/javascript">
+      var {ipcRenderer} = require('electron');
+      function reCapture() {
+        ipcRenderer.send('re-capture');
+        window.close();
+      }
+    </script>
+  </body>
+</html>
