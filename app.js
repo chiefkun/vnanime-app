@@ -26,9 +26,29 @@ app.on('ready', function() {
     cbox = new BrowserWindow({width: 800, height: 600, show: true, webPreferences: {nodeIntegration: true, webSecurity: false}, icon:  path.join(__dirname, 'resource/icon/dango.png')});
     cbox.loadURL('file://' + __dirname + '/resource/main.html');
     // cbox.hide();
+    // cbox.setMenu(null);
     cbox.maximize();
-    cbox.openDevTools();
+    // cbox.openDevTools();
     // mainWindow.hide();
+  });
+  ipcMain.on('re-capture', () => {
+    cbox.webContents.send('capture');
+  });
+  ipcMain.on('capture-done', (event, start, end) => {
+    cbox.capturePage({x:start[0], y:start[1], width: end[0] - start[0], height:end[1] - start[1]}, (image) => {
+      fs.writeFile(__dirname + "/resource/temp/capture-temp.png", image.toPNG(), function(err) {
+          if(err) {
+              return console.log(err);
+          }
+          var captureWindow = new BrowserWindow({width: 800, height: 600, webPreferences:{nodeIntegration: true},icon:  path.join(__dirname, 'resource/icon/dango.png')});
+          captureWindow.setMenu(null);
+          captureWindow.loadURL('file://' + __dirname + '/resource/capture.html');
+          // captureWindow.webContents.openDevTools();
+      });
+    });
+  });
+  ipcMain.on('call-capture', () => {
+    cbox.webContents.send('capture');
   });
 });
 
@@ -39,15 +59,7 @@ var openWindow = function() {
 
   mainWindow = new BrowserWindow({width: 800, height: 600, show: false, webPreferences: {nodeIntegration: true, webSecurity: false}, icon:  path.join(__dirname, 'resource/icon/dango.png')});
   mainWindow.loadURL('file://' + __dirname + '/resource/login.html');
-  mainWindow.webContents.on('did-start-loading', function(){
-    // mainWindow.webContents.insertCSS(fs.readFileSync('resource/css/loading-indicator.css', 'utf8'));
-    // mainWindow.webContents.executeJavaScript("window.$ = window.jQuery = require('jquery');");
-  });
   mainWindow.webContents.on('did-finish-load', function(){
-    // mainWindow.webContents.insertCSS(fs.readFileSync('resource/css/cbox.css', 'utf8'));
-    // mainWindow.webContents.executeJavaScript("document.getElementsByClassName('pn_reg').style.backgroundColor  = 'red';");
-    // mainWindow.webContents.executeJavaScript('console.log(document.getElementsByTagName("iframe")[1].contentDocument)');
-    // mainWindow.webContents.executeJavaScript(fs.readFileSync('resource/js/main.js', 'utf8'));
     mainWindow.setMenu(null);
     // mainWindow.maximize();
     mainWindow.show();
@@ -89,6 +101,11 @@ var createApplicationMenu = function() {
           }
         }
       ]
+    }, {
+      label: 'Capture',
+      click: function() {
+        cbox.webContents.send('capture');
+      }
     }
   ];
   var menu = Menu.buildFromTemplate(menuTemplate);

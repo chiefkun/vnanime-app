@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>VnAnime App</title>
+  <meta content='width=device-width, user-scalable=no, initial-scale=1' name='viewport'>
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="manifest" href="http://my.cbox.ws/vnanime?manifest=1">
+  <link rel="stylesheet" href="http://my.cbox.ws/my.css?1">
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <style media="screen">
+    #select_canvas {
+      display: none;
+      z-index: 9999;
+      position: absolute;
+      left: 0px;
+      top: 0px;
+    }
+  </style>
+  <script>
+
+  window['chanID'] = "vnanime";
+  window['isEnh'] = true;
+  window['sslMode'] = false;
+
+  var wl = window.location;
+  if (window['sslMode'] && wl.protocol !== "https:") {
+    wl.href = "https://"+wl.hostname+wl.pathname;
+  }
+
+  </script>
+  <link rel="stylesheet" href="css/font-awesome.min.css">
+  <link rel="stylesheet" href="css/tab.css">
+  <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script>if (window.module) module = window.module;</script>
+</head>
+<body>
+  <canvas id="select_canvas"></canvas>
+  <div class="area">
+    <div id="cbox-frame">
+      <div id="main" style="margin-left:61px;">
+      	<div class="wrap" style="width: 100%;left:0;margin-left:0">
+      		<div id="fscont">
+      		<div style="font-size: 0px; position: absolute; left: 0; right: 0; height: 129px; overflow: hidden; top: 0;">
+            <iframe id="chatForm" allowtransparency="yes" frameborder="0" width="100%" height="100%" src="http://www3.cbox.ws/box/?boxid=3161826&boxtag=jxs7kd&sec=form" marginheight="0" marginwidth="0" scrolling="no" name="cboxform"></iframe>
+          </div>		<div style="font-size: 0px; position: absolute; left: 0; right: 0; top: 129px; bottom: 0px; overflow: auto; overflow-y: auto; -webkit-overflow-scrolling:touch;">
+            <iframe allowtransparency="yes" frameborder="0" width="100%" height="100%" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0;" src="http://www3.cbox.ws/box/?boxid=3161826&boxtag=jxs7kd&sec=main" marginheight="0" marginwidth="0" scrolling="auto" name="cboxmain"></iframe></div>		</div>
+      	</div>
+      </div>
+      <script src="http://my.cbox.ws/my.js?1"></script>
+    </div>
+    <!-- <webview src="https://github.com/" style="margin-left:61px;height:100%" marginwidth=0 marginheight=0 frameborder=0></webview> -->
+  </div>
+  <script type="text/javascript">
+    var {ipcRenderer} = require('electron');
+  </script>
+  <nav class="main-menu">
+    <ul>
+      <li><a href="#"><i class="fa fa-home fa-2x"></i><span class="nav-text">Home</span></a></li>
+      <li class="has-subnav"><a href="#" onclick="ipcRenderer.send('call-capture')"><i class="fa fa-crop fa-2x"></i><span class="nav-text">Capture</span></a></li>
+      <li class="has-subnav"><a href="#"><i class="fa fa-youtube-play fa-2x"></i><span class="nav-text">Coming soon...</span></a></li>
+      <li class="has-subnav"><a href="#"><i class="fa fa-google fa-2x"></i><span class="nav-text">Coming soon...</span></a></li>
+      <!-- <li> <a href="#"> <i class="fa fa-bar-chart-o fa-2x"></i> <span class="nav-text"> Graphs and Statistics </span> </a> </li>
+      <li> <a href="#"> <i class="fa fa-font fa-2x"></i> <span class="nav-text"> Typography and Icons </span> </a> </li> -->
+      <li> <a href="#"> <i class="fa fa-sticky-note-o  fa-2x"></i> <span class="nav-text"> Coming soon </span> </a> </li>
+      <li> <a href="#"> <i class="fa fa-facebook-square fa-2x"></i> <span class="nav-text"> FanPage </span> </a> </li>
+      <li> <a href="#"> <i class="fa fa-info fa-2x"></i> <span class="nav-text"> About </span> </a> </li>
+    </ul>
+
+    <ul class="logout">
+      <li> <a href="#" onclick="window.close()"> <i class="fa fa-power-off fa-2x"></i> <span class="nav-text"> Logout </span> </a> </li>
+    </ul>
+  </nav>
+  <script type="text/javascript">
+  ipcRenderer.on('capture', () => {
+    var myCanvas = $('#select_canvas').get(0);
+    var myCanvasContext = myCanvas.getContext('2d');
+    myCanvasContext.clearRect(0, 0, myCanvas.width, myCanvas.height);
+    document.body.style.cursor = "crosshair";
+    document.getElementById('select_canvas').style.opacity = 0.5;
+    document.getElementById('select_canvas').style.background = "aliceblue";
+    $("#select_canvas").show();
+  });
+  window.addEventListener('resize', resizeCanvas, false);
+  function resizeCanvas() {
+      var myCanvas = $('#select_canvas').get(0);
+      myCanvas.width = window.innerWidth;
+      myCanvas.height = window.innerHeight;
+  }
+  resizeCanvas();
+  $("#start_select").click(function() {
+    var myCanvas = $('#select_canvas').get(0);
+    var myCanvasContext = myCanvas.getContext('2d');
+    myCanvasContext.clearRect(0, 0, myCanvas.width, myCanvas.height)
+    $("#select_canvas").show();
+  });
+  var start = null;
+  var ctx = $("#select_canvas").get(0).getContext('2d');
+  $("#select_canvas").mousedown(function(e) {
+    start = [e.offsetX, e.offsetY];
+    document.getElementById('select_canvas').style.opacity = 1;
+    document.getElementById('select_canvas').style.background = "";
+    ctx.globalAlpha = 0.5;
+  }).mouseup(function(e) {
+    end = [e.offsetX, e.offsetY];
+
+    $(this).hide();
+    document.body.style.cursor = "";
+    setTimeout(() => {ipcRenderer.send('capture-done', start, end);start = null;}, 100);
+
+  }).mousemove(function(e) {
+    if(!start) return;
+
+    ctx.clearRect(0, 0, this.offsetWidth, this.offsetHeight);
+    ctx.beginPath();
+
+    var x = e.offsetX,
+        y = e.offsetY;
+
+    ctx.rect(start[0], start[1], x - start[0], y - start[1]);
+    ctx.fillStyle = "#b5b5b5";
+    ctx.fill();
+    ctx.lineWidth="4";
+    ctx.strokeStyle="#6c6c6c";
+    ctx.stroke();
+  });
+  </script>
+</body>
+</html>

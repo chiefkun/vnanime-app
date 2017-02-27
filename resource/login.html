@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>VnAnime App</title>
+      <link rel="stylesheet" href="css/login.css">
+</head>
+
+<body>
+  <div class="login-page">
+  <div class="form">
+    <form class="register-form">
+      <p class="wrong-pass">Invalid Password!</p>
+      <p class="reg-acc">Username not exist!</p>
+      <input type="text" placeholder="name"/>
+      <input type="password" placeholder="password"/>
+      <input type="text" placeholder="email address"/>
+      <button id="reg" type="button">create</button>
+      <p class="message">Already registered? <a href="#">Sign In</a></p>
+    </form>
+    <form class="login-form">
+      <p class="wrong-pass">Invalid Password!</p>
+      <p class="reg-acc">Username not exist!</p>
+      <input type="text" placeholder="username" id="log-username"/>
+      <input type="password" placeholder="password" id="log-password"/>
+      <button id="log" type="button">login</button>
+      <p class="message">Not registered? <a href="#">Create an account</a></p>
+    </form>
+  </div>
+</div>
+  <script>if (typeof module === 'object') {window.module = module; module = undefined;}</script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script>if (window.module) module = window.module;</script>
+  <script>
+  var {ipcRenderer} = require('electron');
+  $('.message a').click(function(){
+    $('.wrong-pass, .reg-acc').css('display', 'none');
+     $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
+  });
+  $('#log').click(function() {
+    var formData = {
+           'auth_prov' : "",
+           'auth_id' : "",
+           'pword' : $('#log-password').val(),
+           'sublog': "+Log+in+"
+       };
+    $.ajax({
+      url: "http://www3.cbox.ws/box/?boxid=3161826&boxtag=jxs7kd&sec=profile&n="+ $('#log-username').val() +" &k=",
+      type: 'POST',
+      data: formData
+    }).done(function(data) {
+      $('.wrong-pass, .reg-acc').css('display', 'none');
+      if(data.search("Confirm:&nbsp;") != -1) {
+        $('.reg-acc').css('display', 'block');
+      } else if (data.search("Invalid password") != -1) {
+        $('.wrong-pass').css('display','block');
+      } else {
+        $('.wrong-pass, .reg-acc').css('display', 'none');
+        ipcRenderer.send('login-complete');
+      }
+    });
+  });
+  </script>
+
+</body>
+</html>
