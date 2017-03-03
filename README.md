@@ -8,9 +8,12 @@ npm install -g electron
 ## Feature
 * Chat
 * Capture select area
-* Youtube repeat and get download link (Coming soon)
+* Youtube repeat and get download link
 * Get folder Google Drive (Coming soon)
 * Get Google Drive direct link (Coming soon)
+* Get Brawlhalla Info (Coming soon)
+* Show VNA RSS (Coming soon)
+* Show Facebook notification (Coming soon)
 
 
 [![VnAnime][2]][1]
