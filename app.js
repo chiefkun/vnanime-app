@@ -28,7 +28,7 @@ app.on('ready', function() {
     // cbox.hide();
     // cbox.setMenu(null);
     cbox.maximize();
-    // cbox.openDevTools();
+    cbox.openDevTools();
     // mainWindow.hide();
   });
   ipcMain.on('re-capture', () => {
@@ -98,6 +98,13 @@ var createApplicationMenu = function() {
             var aboutWin = new BrowserWindow({width: 400, height: 200, resizable: false, icon:  path.join(__dirname, 'resource/icon/dango.png')});
             aboutWin.setMenu(null);
             aboutWin.loadURL('file://' + __dirname + '/resource/about.html');
+          }
+        },
+        {
+          label: 'Reload',
+          accelerator: 'Ctrl+R',
+          click: function() {
+            cbox.reload();
           }
         }
       ]

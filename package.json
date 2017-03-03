@@ -18,6 +18,6 @@
   },
   "homepage": "https://github.com/chiefkun/vnanime-app#readme",
   "dependencies": {
-
+    "clipboard": "^1.6.1"
   }
 }

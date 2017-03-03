@@ -1,0 +1,194 @@
+@font-face {
+	font-family: 'Numans';
+	src: url('//static.cbox.ws/fonts/numans-regular1-webfont.eot');
+	src: url('//static.cbox.ws/fonts/numans-regular1-webfont.eot?#iefix') format('embedded-opentype'),
+		url('//static.cbox.ws/fonts/numans-regular1-webfont.woff2?1') format('woff2'),
+		url('//static.cbox.ws/fonts/numans-regular1-webfont.woff') format('woff'),
+		url('//static.cbox.ws/fonts/numans-regular1-webfont.ttf') format('truetype'),
+		url('//static.cbox.ws/fonts/numans-regular1-webfont.svg#numansregular') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+    font-family: 'Open Sans';
+	font-weight: 400;
+    src: url('//static.cbox.ws/fonts/opensans-regular1.eot');
+    src: url('//static.cbox.ws/fonts/opensans-regular1.eot?#iefix') format('embedded-opentype'),
+         url('//static.cbox.ws/fonts/opensans-regular1.woff2') format('woff2'),
+         url('//static.cbox.ws/fonts/opensans-regular1.woff') format('woff'),
+         url('//static.cbox.ws/fonts/opensans-regular1.ttf') format('truetype');
+    font-style: normal;
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
+	position: relative;
+	width: 100%;
+	height: 100%;
+	min-width: 150px;
+	overflow: hidden;
+	background: #fff;
+	font-family: "Open Sans", Helvetica, Arial, sans-serif;
+	font-size: 14px;
+}
+
+body {
+	overflow: auto;
+}
+
+.btn {
+	position: relative;
+	float: right;
+	height: 40px;
+	width: 40px;
+	text-align: center;
+	cursor: pointer;
+
+	color: #fff;
+	font: normal normal normal 20px/40px FontAwesome;
+}
+
+.btn:active {
+	background: #059ad0;
+}
+
+.btn.Hidden {
+	display: none;
+}
+.btn.Busy, .btn.Busy:active {
+	animation: ring 0.2s ease-in-out infinite alternate;
+}
+
+@keyframes ring {
+	from {
+		transform: rotateZ(15deg);
+	}
+	to {
+		transform: rotateZ(-15deg);
+	}
+}
+
+#pushBtn.NotAvail {
+	color: #888;
+}
+
+#pushBtn.Subscribed:before {
+	content: "\f1f6";
+}
+#pushBtn.CanSubscribe:before {
+	content: "\f0f3";
+}
+#pushBtn.NotAvail:before {
+	content: "\f0f3";
+}
+
+#btnBreakout:before {
+	content: "\f08e";
+}
+
+
+#header {
+	position: relative;
+	z-index: 3;
+	background: #323232;
+	color: #ddd;
+	font: normal 150% 'Numans', Century Gothic, sans-serif;
+	color: #fff;
+	height: 40px;
+	line-height: 40px;
+}
+
+#notice {
+    position: relative;
+    z-index: 2;
+	background: #A6D83F;
+    text-align: right;
+	padding: 0.5em;
+	top: -60px;
+	font-size: 0;
+	color: #fff;
+	transition: all 300ms ease-in;
+}
+
+#notice.Show {
+	top: 0;
+	font-size: 120%;
+}
+
+.wrap {
+	position: relative;
+	height: 100%;
+	width: 100%;
+  left: 0px;
+  margin-left: 0;
+}
+
+h1 {
+    margin: 0 1em;
+    font-weight: normal;
+    font-size: inherit;
+	float: left;
+	max-width: 50%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+#main {
+	position: absolute;
+	top: 40px;
+	bottom: 0;
+	left: 0;
+	right: 0;
+/* 	max-height: 800px;	square */
+}
+
+#main.Fullscreen {
+	top: 0;
+}
+
+#main.Fullscreen .wrap {
+	width: 100%;
+	left: 0;
+	margin: 0;
+}
+
+#fscont {
+
+}
+
+#footer {
+
+}
+
+#credit {
+	font-size: 13px;
+	float: right;
+	color: #ababab;
+	padding-right: 1em;
+}
+
+#credit a {
+	text-decoration: none;
+	color: inherit;
+}
+
+@media (max-height: 300px) {
+
+	#header {
+		display: none;
+	}
+	#main {
+		top: 0;
+	}
+
+}
+
+@media (min-width: 800px) {
+	.wrap {
+		width: 800px;
+		left: 50%;
+		margin-left: -400px;
+	}
+}
