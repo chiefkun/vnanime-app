@@ -3,25 +3,25 @@
 var {app, BrowserWindow, Menu, shell} = require('electron');
 var {ipcMain} = require('electron');
 var fs = require('fs');
-var path = require('path')
+var path = require('path');
 
 var mainWindow = null;
 var loadingPage = null;
 var cbox = null;
 
 // Quit when all windows are closed.
-app.on('window-all-closed', function() {
+app.on('window-all-closed', () => {
   if(process.platform != 'win32') {
     app.quit();
   }
 });
 
-app.on('ready', function() {
+app.on('ready', () => {
   createApplicationMenu();
   openWindow();
 
-  ipcMain.on('login-complete', function() {
-    // loadingPage.show();
+  // Login success
+  ipcMain.on('login-complete', () => {
     mainWindow.hide();
     cbox = new BrowserWindow({width: 800, height: 600, show: true, webPreferences: {nodeIntegration: true, webSecurity: false}, icon:  path.join(__dirname, 'resource/icon/dango.png')});
     cbox.loadURL('file://' + __dirname + '/resource/main.html');
@@ -31,12 +31,16 @@ app.on('ready', function() {
     cbox.openDevTools();
     // mainWindow.hide();
   });
+
+  // Re-Capture screen event
   ipcMain.on('re-capture', () => {
     cbox.webContents.send('capture');
   });
+
+  // Popup capture control page
   ipcMain.on('capture-done', (event, start, end) => {
     cbox.capturePage({x:start[0], y:start[1], width: end[0] - start[0], height:end[1] - start[1]}, (image) => {
-      fs.writeFile(__dirname + "/resource/temp/capture-temp.png", image.toPNG(), function(err) {
+      fs.writeFile(__dirname + "/resource/temp/capture-temp.png", image.toPNG(), (err) => {
           if(err) {
               return console.log(err);
           }
@@ -47,19 +51,16 @@ app.on('ready', function() {
       });
     });
   });
-  ipcMain.on('call-capture', () => {
-    cbox.webContents.send('capture');
-  });
 });
 
-var openWindow = function() {
+var openWindow = () => {
   loadingPage = new BrowserWindow({width: 800, height: 600, resizable: false, icon:  path.join(__dirname, 'resource/icon/dango.png')});
   loadingPage.setMenu(null);
   loadingPage.loadURL('file://' + __dirname + '/resource/loading.html');
 
   mainWindow = new BrowserWindow({width: 800, height: 600, show: false, webPreferences: {nodeIntegration: true, webSecurity: false}, icon:  path.join(__dirname, 'resource/icon/dango.png')});
   mainWindow.loadURL('file://' + __dirname + '/resource/login.html');
-  mainWindow.webContents.on('did-finish-load', function(){
+  mainWindow.webContents.on('did-finish-load', () => {
     mainWindow.setMenu(null);
     // mainWindow.maximize();
     mainWindow.show();
@@ -67,12 +68,12 @@ var openWindow = function() {
     loadingPage.hide();
   });
 
-  mainWindow.on('closed', function() {
+  mainWindow.on('closed', () => {
     mainWindow = null;
   });
 };
 
-var createApplicationMenu = function() {
+var createApplicationMenu = () => {
   var menuTemplate = [
     {
       label: 'File',
@@ -80,7 +81,7 @@ var createApplicationMenu = function() {
         {
           label: 'Quit',
           accelerator: 'Ctrl+Q',
-          click: function () {app.quit();}
+          click: () => {app.quit();}
         }
       ]
     }, {
@@ -88,13 +89,13 @@ var createApplicationMenu = function() {
       submenu: [
         {
           label: 'Vnanime',
-          click: function() {
+          click: () => {
             shell.openExternal('https://google.com/');
           }
         },
         {
           label: 'About',
-          click: function() {
+          click: () => {
             var aboutWin = new BrowserWindow({width: 400, height: 200, resizable: false, icon:  path.join(__dirname, 'resource/icon/dango.png')});
             aboutWin.setMenu(null);
             aboutWin.loadURL('file://' + __dirname + '/resource/about.html');
@@ -110,7 +111,7 @@ var createApplicationMenu = function() {
       ]
     }, {
       label: 'Capture',
-      click: function() {
+      click: () => {
         cbox.webContents.send('capture');
       }
     }
