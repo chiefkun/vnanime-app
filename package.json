@@ -1,10 +1,13 @@
 {
-  "name": "vnanime-app",
+  "name": "VnAnime",
+  "productName": "VnAnime",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=resource/icon/dango.ico --prune=true --out=release-builds",
+    "package-win": "electron-packager . --overwrite --asar=true --platform=win32 --arch=ia32 --icon=resource/icon/dango.ico --prune=true --out=release-builds --version-string.CompanyName=VNA --version-string.FileDescription=VnAnime --version-string.ProductName=\"VnAnime App\"",
+    "package-linux": "electron-packager . --overwrite --platform=linux --arch=x64 --icon=resource/icon/dango.ico --prune=true --out=release-builds"
   },
   "repository": {
     "type": "git",
@@ -19,5 +22,9 @@
   "homepage": "https://github.com/chiefkun/vnanime-app#readme",
   "dependencies": {
     "clipboard": "^1.6.1"
+  },
+  "devDependencies": {
+    "electron": "^1.6.1",
+    "electron-packager": "^8.5.2"
   }
 }

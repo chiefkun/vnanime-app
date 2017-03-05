@@ -1,7 +1,6 @@
 'use strict';
 
-var {app, BrowserWindow, Menu, shell} = require('electron');
-var {ipcMain} = require('electron');
+var {app, BrowserWindow, Menu, shell, ipcMain} = require('electron');
 var fs = require('fs');
 var path = require('path');
 
@@ -24,11 +23,14 @@ app.on('ready', () => {
   ipcMain.on('login-complete', () => {
     mainWindow.hide();
     cbox = new BrowserWindow({width: 800, height: 600, show: true, webPreferences: {nodeIntegration: true, webSecurity: false}, icon:  path.join(__dirname, 'resource/icon/dango.png')});
+    cbox.on('closed', () => {
+      app.quit();
+    });
     cbox.loadURL('file://' + __dirname + '/resource/main.html');
     // cbox.hide();
     // cbox.setMenu(null);
     cbox.maximize();
-    cbox.openDevTools();
+    // cbox.openDevTools();
     // mainWindow.hide();
   });
 
@@ -87,20 +89,20 @@ var createApplicationMenu = () => {
     }, {
       label: 'Help',
       submenu: [
-        {
-          label: 'Vnanime',
-          click: () => {
-            shell.openExternal('https://google.com/');
-          }
-        },
-        {
-          label: 'About',
-          click: () => {
-            var aboutWin = new BrowserWindow({width: 400, height: 200, resizable: false, icon:  path.join(__dirname, 'resource/icon/dango.png')});
-            aboutWin.setMenu(null);
-            aboutWin.loadURL('file://' + __dirname + '/resource/about.html');
-          }
-        },
+        // {
+        //   label: 'Vnanime',
+        //   click: () => {
+        //     shell.openExternal('https://google.com/');
+        //   }
+        // },
+        // {
+        //   label: 'About',
+        //   click: () => {
+        //     var aboutWin = new BrowserWindow({width: 400, height: 200, resizable: false, icon:  path.join(__dirname, 'resource/icon/dango.png')});
+        //     aboutWin.setMenu(null);
+        //     aboutWin.loadURL('file://' + __dirname + '/resource/about.html');
+        //   }
+        // },
         {
           label: 'Reload',
           accelerator: 'Ctrl+R',

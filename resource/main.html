@@ -66,16 +66,28 @@
       </form>
       <div id="yt-display" style="margin-top:20px"></div>
     </div>
+    <!-- Google Drive -->
+    <div id="ggdrive" style="display:none;margin-left:61px;text-align: center;margin-top: 20px;">
+      <form class="form-inline">
+        <div class="form-group">
+          <input id="gg-link" class="form-control" type="url"  placeholder="https://drive.google.com/..." value="" style="width: 500px"><br>
+        </div>
+        <div class="form-group">
+          <button type="button" id="gg" class="btn btn-default" onclick="ggAnalyst()" style="width:100px">Analyst</button>
+        </div>
+      </form>
+      <div id="gg-display" style="margin-top:20px"></div>
+    </div>
   </div>
   <script type="text/javascript">
-    var {ipcRenderer} = require('electron');
+    var {ipcRenderer, shell} = require('electron');
   </script>
   <nav class="main-menu">
     <ul>
       <li><a href="#" onclick="homeMenu()"><i class="fa fa-home fa-2x"></i><span class="nav-text">Home</span></a></li>
       <li class="has-subnav"><a href="#" onclick="ipcRenderer.send('call-capture')"><i class="fa fa-crop fa-2x"></i><span class="nav-text">Capture</span></a></li>
       <li class="has-subnav"><a href="#" onclick="ytMenu()"><i class="fa fa-youtube-play fa-2x"></i><span class="nav-text">Youtube</span></a></li>
-      <li class="has-subnav"><a href="#"><i class="fa fa-google fa-2x"></i><span class="nav-text">Coming soon...</span></a></li>
+      <li class="has-subnav"><a href="#" onclick="ggMenu()"><i class="fa fa-google fa-2x"></i><span class="nav-text">Google Drive</span></a></li>
       <!-- <li> <a href="#"> <i class="fa fa-bar-chart-o fa-2x"></i> <span class="nav-text"> Graphs and Statistics </span> </a> </li>
       <li> <a href="#"> <i class="fa fa-font fa-2x"></i> <span class="nav-text"> Typography and Icons </span> </a> </li> -->
       <li> <a href="#"> <i class="fa fa-sticky-note-o  fa-2x"></i> <span class="nav-text"> Coming soon </span> </a> </li>

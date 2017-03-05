@@ -1,3 +1,6 @@
+const GG_API_KEY = "AIzaSyC1WyP_glm0d4wW1vYqW8IVwl-kOhhnpIo";
+const GG_API_LINK ="https://www.googleapis.com/drive/v3/files/";
+
 ipcRenderer.on('capture', () => {
   var myCanvas = $('#select_canvas').get(0);
   var myCanvasContext = myCanvas.getContext('2d');
@@ -60,7 +63,10 @@ function ytMenu() {
   $(".area").children().css("display", "none");
   $("#youtube").css("display", "block");
 }
-
+function ggMenu() {
+  $(".area").children().css("display", "none");
+  $("#ggdrive").css("display", "block");
+}
 // Youtube function
 function ytAnalyst() {
   var id =  document.getElementById("yt-link").value.match(/.*(?:youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=)([^#\&\?]*).*/i);
@@ -87,6 +93,80 @@ function ytAnalyst() {
       }
 
 
+      $('.btnC').tooltip({
+        trigger: 'click',
+        placement: 'bottom'
+      });
+      function setTooltip(message, id) {
+        $('#'+id).tooltip('hide')
+          .attr('data-original-title', message)
+          .tooltip('show');
+      }
+      function hideTooltip(id) {
+        setTimeout(function() {
+          $('#'+id).tooltip('hide');
+        }, 1000);
+      }
+      // Initialize Copy to Clipboard
+      var btns = document.querySelectorAll('.btnC');
+      var clipboard = new Clipboard(btns);
+      clipboard.on('success', function(e) {
+        setTooltip('Copied!', e.trigger.id);
+        hideTooltip(e.trigger.id);
+      });
+    });
+  }
+}
+// Googe Drive
+function ggAnalyst() {
+  var id =  document.getElementById("gg-link").value.match(/https?:\/{2}drive.google.com\/file\/d\/([^/]*).*/i);
+  if(!id) {
+    // Check folder
+    id =  document.getElementById("gg-link").value.match(/https?:\/{2}drive.google.com\/drive\/folders\/([^/?]*).*/i);
+    $.ajax({
+      url: GG_API_LINK + id[1] + "?key=" + GG_API_KEY,
+    }).done((json) => {
+      document.getElementById("gg-display").innerHTML = "<h4>" + json['name'] + "</h4>";
+      $.ajax({
+        url: "https://www.googleapis.com/drive/v2/files?q='"+id[1]+"'+in+parents&key=" + GG_API_KEY,
+      }).done((data) => {
+        data.items.forEach((item, idx) => {
+          document.getElementById("gg-display").innerHTML += '<div class="form-inline"><div class="form-group"><img src="'+item["thumbnailLink"]+'" alt="VNA" class="img-thumbnail"><label style="width:150px;text-transform: uppercase;margin-right: 20px;">'+item["originalFilename"]+'</label>'
+          + '<input class="form-control" id="gg-link-'+idx+'" value="'+GG_API_LINK+item["id"]+'?alt=media&key='+GG_API_KEY+'" readonly style="width: 250px;height: 25px;margin-right: 20px;">'
+          + '</div><div class="form-group">' + '<button class="btn btn-default btnC" id="gg-bt-link-'+idx+'" data-clipboard-target="#gg-link-'+idx+'" style="    margin-left: 10px;"><i class="fa  fa-clipboard fa-lg" style="height: 25px;width: 30px;"></i></button>'
+          +'<a href="#" onclick="shell.openExternal(\'https://docs.google.com/uc?export=download&id='+item["id"]+'\');"><button class="btn btn-default"><i class="fa  fa-download fa-lg" style="height: 25px;width: 30px;"></i></button></a></div></div><br>';
+        });
+        $('.btnC').tooltip({
+          trigger: 'click',
+          placement: 'bottom'
+        });
+        function setTooltip(message, id) {
+          $('#'+id).tooltip('hide')
+            .attr('data-original-title', message)
+            .tooltip('show');
+        }
+        function hideTooltip(id) {
+          setTimeout(function() {
+            $('#'+id).tooltip('hide');
+          }, 1000);
+        }
+        // Initialize Copy to Clipboard
+        var btns = document.querySelectorAll('.btnC');
+        var clipboard = new Clipboard(btns);
+        clipboard.on('success', function(e) {
+          setTooltip('Copied!', e.trigger.id);
+          hideTooltip(e.trigger.id);
+        });
+      });
+    });
+  } else {
+    $.ajax({
+      url: GG_API_LINK + id[1] + "?key=" + GG_API_KEY,
+    }).done((data) => {
+      document.getElementById("gg-display").innerHTML =  '<div class="form-inline"><div class="form-group"><label style="width:150px;text-transform: uppercase;margin-right: 20px;">'+data["name"]+'</label>'
+      + '<input class="form-control" id="gg-link-single" value="'+GG_API_LINK+id[1]+'?alt=media&key='+GG_API_KEY+'" readonly style="width: 250px;height: 25px;margin-right: 20px;">'
+      + '</div><div class="form-group">' + '<button class="btn btn-default btnC" id="gg-bt-link-single" data-clipboard-target="#gg-link-single" style="    margin-left: 10px;"><i class="fa  fa-clipboard fa-lg" style="height: 25px;width: 30px;"></i></button>'
+      + '<a href="#" onclick="shell.openExternal(\'https://docs.google.com/uc?export=download&id='+id[1]+'\');"><button class="btn btn-default"><i class="fa  fa-download fa-lg" style="height: 25px;width: 30px;"></i></button></a></div></div><br>';
       $('.btnC').tooltip({
         trigger: 'click',
         placement: 'bottom'
